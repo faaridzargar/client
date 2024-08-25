@@ -4,10 +4,10 @@ import VideoPlayer from '@/components/VideoPlayer';
 import { useEffect, useState } from 'react';
 
 export default function VideoPage({ params }) {
-  const { videoId } = params; // Captures the videoId from the params
-  const router = useRouter(); // Initialize the useRouter hook
-  const [progress, setProgress] = useState(0); // State to hold the progress data
-  const [isNextEnabled, setIsNextEnabled] = useState(false); // State to enable/disable Next button
+  const { videoId } = params; 
+  const router = useRouter();
+  const [progress, setProgress] = useState(0);
+  const [isNextEnabled, setIsNextEnabled] = useState(false);
 
   useEffect(() => {
     const fetchProgress = async () => {
@@ -17,7 +17,7 @@ export default function VideoPage({ params }) {
         setProgress(data.progress.progress);
       } catch (err) {
         console.error('Error fetching video progress:', err);
-        setProgress(0); // Set to 0 if there was an error
+        setProgress(0);
       }
     };
 
@@ -25,7 +25,6 @@ export default function VideoPage({ params }) {
   }, [videoId]);
 
   useEffect(() => {
-    // Enable the "Next" button if the progress is 1 (video fully watched)
     if (progress === 1) {
       setIsNextEnabled(true);
     }
@@ -36,7 +35,7 @@ export default function VideoPage({ params }) {
     controls: true,
     sources: [
       {
-        src: `/videos/Video${videoId}.mp4`, // Set the source based on the videoId
+        src: `/videos/Video${videoId}.mp4`,
         type: 'video/mp4',
       },
     ],
@@ -99,7 +98,7 @@ export default function VideoPage({ params }) {
   };
 
   const handleVideoEnd = () => {
-    setProgress(1); // Set progress to 1 when the video ends
+    setProgress(1);
   };
 
   return (
@@ -109,17 +108,17 @@ export default function VideoPage({ params }) {
           className="my-4 px-4 py-2 text-white bg-black hover:bg-black-700 rounded"
         >
           Dashboard
-        </button>
-      <div className="flex items-center mb-4">
+      </button>
+      <div className="flex flex-row md:flex-row items-center mb-4">
         <button 
           onClick={handleBack} 
-          className="mr-4 px-4 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded"
+          className="mr-4 mb-2 md:mb-0 px-4 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded"
         >
           Back
         </button>
         <button 
           onClick={handlePrevious} 
-          className="mr-4 px-4 py-2 text-white bg-gray-500 hover:bg-gray-700 rounded"
+          className="px-4 py-2 text-white bg-gray-500 hover:bg-gray-700 rounded"
           disabled={prevVideoId <= 0} 
         >
           &#9664; 
@@ -129,18 +128,18 @@ export default function VideoPage({ params }) {
       {content && (
         <>
           <h1 className="text-2xl font-bold mb-4">{content.title}</h1>
-          <div className="flex">
-            <div className="w-2/3">
+          <div className="flex flex-col md:flex-row">
+            <div className="md:w-2/3 mb-4 md:mb-0">
               <p>{content.content}</p>
             </div>
-            <div className="">
-            <VideoPlayer options={videoJsOptions} video={{ id: videoId }} onVideoEnd={handleVideoEnd} />
+            <div className="md:w-1/3">
+              <VideoPlayer options={videoJsOptions} video={{ id: videoId }} onVideoEnd={handleVideoEnd} />
             </div>
           </div>
-          <div className="mt-4">
+          <div className="mt-4 flex flex-col md:flex-row">
             <button 
               onClick={handleNext} 
-              className={`px-4 py-2 text-white rounded ${
+              className={`mb-2 md:mb-0 md:mr-2 px-4 py-2 text-white rounded ${
                 isNextEnabled ? 'bg-blue-500 hover:bg-blue-700' : 'bg-gray-300 cursor-not-allowed'
               }`}
               disabled={!isNextEnabled}

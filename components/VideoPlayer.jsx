@@ -12,7 +12,7 @@ const VideoPlayer = ({ options, video }) => {
   useEffect(() => {
     const loadVideoProgress = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/videos/progress/video/${video.id}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/videos/progress/video/${video.id}`);
         const data = await response.json();
         return data.progress.progress;
       } catch (err) {
@@ -60,7 +60,7 @@ const VideoPlayer = ({ options, video }) => {
           console.log('Progress:', progress);
 
           if (video && video.id) {
-            fetch('http://localhost:5000/api/videos/progress', {
+            fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/videos/progress`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ userId: 1, videoId: video.id, progress }),
@@ -90,11 +90,11 @@ const VideoPlayer = ({ options, video }) => {
       <div data-vjs-player>
         <video
           ref={videoRef} // Attach the ref to the video element
-          className="video-js vjs-default-skin"
+          className="video-js vjs-default-skin w-[100%] h-[360px]"
           controls
           preload="auto"
-          width="640" // Set width and height for consistency
-          height="360"
+          // width="640" // Set width and height for consistency
+          // height="360"
         >
           {/* Video source is provided via options */}
           <source src={options.sources[0].src} type={options.sources[0].type} />
